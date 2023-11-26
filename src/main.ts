@@ -45,13 +45,8 @@ async function inject() {
 async function fetchIndex() {
   console.log("[cML] Fetching mod index...");
 
-  const res = await fetch(
-    "https://gist.githubusercontent.com/cydq/7ff16756f58108aa9312c2b28729a02e/raw/1535058954153410013431fc83d7f824cec163ac/index.json",
-  );
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch index");
-  }
+  const res = await fetch("https://cml.snowy.cafe/index.json");
+  if (!res.ok) throw new Error("Failed to fetch index");
 
   const json = await res.json();
 
@@ -88,5 +83,5 @@ export async function init() {
 
   await inject();
 
-  injectMenu()
+  injectMenu();
 }

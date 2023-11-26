@@ -4,8 +4,6 @@ import "./inject_api";
 
 import { init } from "./main";
 
-const MYSELF = "h";
-
 // https://file.garden/Y5_jdq2IF2n_McHn/corru%20modding/swupMod.js
 export function overwriteSwup() {
   swup._handlers.contentReplaced = [
@@ -20,15 +18,9 @@ export function overwriteSwup() {
       await cML.waitForLoad();
       change("lastload", Date.now());
 
-      await cML.addResources([MYSELF]);
-
-      // overwriteSwup()
-      // await init()
+      await cML.addResources(["https://cml.snowy.cafe/cModLoader.js"]);
     },
   ];
 }
 
-cML.waitForLoad().then(() => {
-  // overwriteSwup()
-  init();
-});
+cML.waitForLoad().then(overwriteSwup).then(init);
