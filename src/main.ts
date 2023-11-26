@@ -45,7 +45,10 @@ async function inject() {
 async function fetchIndex() {
   console.log("[cML] Fetching mod index...");
 
-  const res = await fetch("https://cml.snowy.cafe/index.json");
+  const indexLocation =
+    data.get("indexUrl") ?? "https://cml.snowy.cafe/index.json";
+
+  const res = await fetch(indexLocation);
   if (!res.ok) throw new Error("Failed to fetch index");
 
   const json = await res.json();

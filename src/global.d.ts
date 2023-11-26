@@ -1,11 +1,13 @@
 import * as api from "./api";
 
 declare global {
-  /**
-   * cModLoader API
-   */
+  // Mod API
   const cML: typeof api;
 
+  // Build Constants
+  const __VERSION__: string;
+
+  // Corru stuff
   const swup: any;
   const change: any;
   const env: { loading: boolean };

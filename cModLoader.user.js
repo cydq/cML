@@ -9,6 +9,6 @@
 // @description Loads the latest version of cModLoader
 // ==/UserScript==
 
-const script = document.createElement('script')
-script.src = "https://cml.snowy.cafe/cModLoader.js"
-unsafeWindow.content.appendChild(script)
+const script = document.createElement("script");
+script.src = "https://cml.snowy.cafe/cModLoader.js";
+unsafeWindow.content.appendChild(script);

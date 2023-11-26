@@ -13,6 +13,8 @@ export interface DataStore {
    * A list of enabled mods
    */
   enabled: string[];
+
+  indexUrl: string | undefined;
 }
 
 export const data = cML.LocalStore.createTyped<DataStore>("cml");
