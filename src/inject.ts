@@ -5,7 +5,7 @@ import "./inject_api";
 import { init } from "./main";
 
 // https://file.garden/Y5_jdq2IF2n_McHn/corru%20modding/swupMod.js
-export function overwriteSwup() {
+function overwriteSwup() {
   swup._handlers.contentReplaced = [
     async () => {
       oldPage = page;

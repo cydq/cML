@@ -1,18 +1,18 @@
 export async function addResources(
   locations: string[],
-  timeout = 100,
+  timeout = 50,
 ): Promise<void> {
   globalThis.addResources(locations);
   return waitForLoad(timeout);
 }
 
-export async function waitForLoad(timeout = 100): Promise<void> {
+export async function waitForLoad(timeout = 50): Promise<void> {
   return new Promise((resolve) => {
     setTimeout(function load() {
       if (env.loading) return setTimeout(load, timeout);
 
       resolve();
-    }, timeout);
+    }, timeout * 4);
   });
 }
 

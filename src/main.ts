@@ -67,7 +67,7 @@ async function fetchIndex() {
   console.log("[cML] Fetched mod index!");
 }
 
-export async function init() {
+async function checkIndex() {
   const VERSION = 1;
 
   if (index.get(__version__) !== VERSION) {
@@ -83,8 +83,14 @@ export async function init() {
       );
     }
   }
+}
 
+export async function init() {
+  if (cML.loaded) return inject();
+
+  await checkIndex();
   await inject();
 
   injectMenu();
+  cML.loaded = true;
 }
