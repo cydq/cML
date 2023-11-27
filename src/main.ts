@@ -1,4 +1,5 @@
 import { __hash__, __version__, data, index, injectMenu } from "./internal";
+import { __meta__ } from "./api";
 
 async function inject() {
   const registry = cML.registry;
@@ -86,11 +87,11 @@ async function checkIndex() {
 }
 
 export async function init() {
-  if (cML.loaded) return inject();
+  if (cML.__meta__.loaded) return inject();
 
   await checkIndex();
   await inject();
 
   injectMenu();
-  cML.loaded = true;
+  cML.__meta__.loaded = true;
 }

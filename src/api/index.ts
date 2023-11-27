@@ -3,4 +3,7 @@ export * from "./registry";
 export * from "./storage";
 export * from "./utils";
 
-export let loaded = false;
+export const __meta__ = {
+  version: __VERSION__,
+  loaded: false,
+};
