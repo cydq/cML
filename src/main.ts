@@ -1,5 +1,4 @@
 import { __hash__, __version__, data, index, injectMenu } from "./internal";
-import { __meta__ } from "./api";
 
 async function inject() {
   const registry = cML.registry;

@@ -1,100 +1,6 @@
 import { registry } from "../../api";
 import { __hash__, __version__, data, index } from "..";
-
-interface SysboxOptions {
-  title: string;
-  description?: string;
-  buttons?: { title: string; action: () => void }[][];
-  intermediate?: any[];
-}
-
-function createSysbox(opts: SysboxOptions) {
-  const box = document.createElement("div");
-  box.className = "sysbox";
-
-  const titleElement = document.createElement("h3");
-  titleElement.innerText = opts.title;
-  box.appendChild(titleElement);
-
-  if (opts.description) {
-    const descriptionElement = document.createElement("span");
-    descriptionElement.className = "syscription";
-    descriptionElement.innerText = opts.description;
-    box.appendChild(descriptionElement);
-  }
-
-  if (opts.intermediate) {
-    opts.intermediate.forEach((e) => box.appendChild(e));
-  }
-
-  if (opts.buttons && opts.buttons.length > 0) {
-    for (const row of opts.buttons) {
-      const buttonsElement = document.createElement("div");
-      buttonsElement.className = "buttons";
-
-      for (const button of row) {
-        const buttonElement = document.createElement("span");
-        buttonElement.className = "button";
-        buttonElement.innerText = button.title;
-        buttonElement.onclick = button.action;
-        buttonsElement.appendChild(buttonElement);
-      }
-
-      box.appendChild(buttonsElement);
-    }
-  }
-
-  return box;
-}
-
-interface MenuOptions {
-  title: string;
-  id: string;
-}
-
-function createMenu(opts: MenuOptions) {
-  const menu = document.createElement("details");
-  menu.id = opts.id + "-select";
-  menu.className = "sysblock center";
-
-  menu.setAttribute("menu", opts.id);
-
-  const summary = document.createElement("summary");
-  summary.innerText = opts.title;
-  menu.appendChild(summary);
-
-  return menu;
-}
-
-interface InputOptions {
-  id: string;
-  data?: string;
-  placeholder: string;
-}
-
-function createInput(opts: InputOptions) {
-  const input = document.createElement("input");
-  input.type = "textarea";
-  input.id = opts.id;
-  input.placeholder = opts.placeholder;
-
-  if (opts.data) {
-    input.value = opts.data;
-  }
-
-  input.style.textAlign = "center";
-  input.style.border = "1px solid var(--neutral-color)";
-  input.style.background = "var(--bright-color)";
-  input.style.padding = "0.5em";
-  input.style.marginTop = "0.5em";
-  input.style.fontFamily = "barcodetext, sans-serif";
-  input.style.lineHeight = "1em";
-  input.style.fontSize = "2em";
-  input.style.display = "block";
-  input.style.width = "100%";
-
-  return input;
-}
+import { createMenu, createSysbox, createInput } from "./utils";
 
 export function injectMenu() {
   const menu = createMenu({ title: "cModLoader", id: "cml" });
@@ -227,7 +133,7 @@ export function injectMenu() {
     }),
   );
 
-  const mods = createMenu({ title: "cML Enabled Mods", id: "cml-mods" });
+  document.querySelector("#system-menu")?.appendChild(menu);
 
   for (const mod of registry.getMods()) {
     const info = index.get(mod.name);
@@ -239,19 +145,21 @@ export function injectMenu() {
       continue;
     }
 
-    mods.appendChild(
+    const modMenu = createMenu({ title: mod.name, id: "cml-mod-" + mod.name });
+
+    modMenu.appendChild(
       createSysbox({
-        title: `${mod.name} ${info.version} - ${info.author}`,
-        description: info.description,
+        title: "Mod Info",
+        description: `v${info.version} by ${info.author}\n\n${info.description}`,
         buttons: [
           [
             {
               title: "Disable",
               action: () => {
-                const rest =
-                  data.get("enabled")?.filter((s) => s !== mod.name) ?? [];
-
-                data.set("enabled", rest);
+                data.set(
+                  "enabled",
+                  data.get("enabled")?.filter((s) => s !== mod.name) ?? [],
+                );
                 location.reload();
               },
             },
@@ -267,14 +175,79 @@ export function injectMenu() {
             },
             {
               title: "Reset Data",
-              action: () => {
-                mod.data.clear();
-              },
+              action: () => mod.data.clear(),
             },
           ],
         ],
       }),
     );
+
+    for (const key of Object.keys(mod.opt.options as {})) {
+      const option = mod.opt.options?.[key];
+      if (!option) continue;
+
+      if (option.type === "check") {
+        modMenu.appendChild(
+          createSysbox({
+            title: option.name ?? "Unnamed option",
+            description: option.description,
+            buttons: [
+              [
+                {
+                  title: "Off",
+                  action: () => mod.options.set(key, false),
+                },
+                {
+                  title: "On",
+                  action: () => mod.options.set(key, true),
+                },
+              ],
+            ],
+          }),
+        );
+      }
+
+      if (option.type === "input") {
+        modMenu.appendChild(
+          createSysbox({
+            title: option.name ?? "Unnamed option",
+            description: option.description,
+            intermediate: [
+              createInput({
+                id: `cml-mod-${mod.name}-opt-${key}`,
+                placeholder: option.default,
+              }),
+            ],
+            buttons: [
+              [
+                {
+                  title: "Revert",
+                  action: () => {
+                    const e = document.getElementById(
+                      `cml-mod-${mod.name}-opt-${key}`,
+                    );
+                    const def = mod.opt.options?.[key]?.default;
+                    mod.options.set(key, def);
+                    (e as HTMLInputElement).value = def;
+                  },
+                },
+                {
+                  title: "Save",
+                  action: () => {
+                    const e = document.getElementById(
+                      `cml-mod-${mod.name}-opt-${key}`,
+                    );
+                    mod.options.set(key, (e as HTMLInputElement).value ?? "");
+                  },
+                },
+              ],
+            ],
+          }),
+        );
+      }
+    }
+
+    document.querySelector("#system-menu")?.appendChild(modMenu);
   }
 
   const available = createMenu({ title: "cML Mod Index", id: "cml-mods" });
@@ -288,8 +261,8 @@ export function injectMenu() {
 
     available.appendChild(
       createSysbox({
-        title: `${name} ${mod.version} - ${mod.author}`,
-        description: mod.description,
+        title: `${name}`,
+        description: `v${mod.version} by ${mod.author}\n\n${mod.description}`,
         buttons: [
           [
             {
@@ -305,7 +278,5 @@ export function injectMenu() {
     );
   }
 
-  document.querySelector("#system-menu")?.appendChild(menu);
-  document.querySelector("#system-menu")?.appendChild(mods);
   document.querySelector("#system-menu")?.appendChild(available);
 }
