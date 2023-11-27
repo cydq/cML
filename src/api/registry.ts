@@ -4,6 +4,8 @@ export interface Registry {
   register(mod: Mod): void;
   getMod(name: string): Mod | undefined;
   getMods(): Mod[];
+
+  emit(event: "load" | "unload" | "enable" | "disable"): Promise<number>;
 }
 
 function createRegistry(): Registry {
@@ -20,6 +22,21 @@ function createRegistry(): Registry {
 
     getMods() {
       return [...mods.values()];
+    },
+
+    async emit(event) {
+      let loaded = 0;
+
+      for (const mod of mods.values()) {
+        try {
+          await mod.emit(event);
+          loaded++;
+        } catch (e: unknown) {
+          console.error(`[cML] Failed to load ${mod.name}:`, e);
+        }
+      }
+
+      return loaded;
     },
   };
 }

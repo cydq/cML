@@ -2,14 +2,16 @@ import { registry, LocalStore, Store } from ".";
 
 export interface Mod {
   name: string;
+  enabled: boolean;
 
   opt: ModOptions;
 
   options: Store;
   data: Store;
 
-  enable(): void;
-  disable(): void;
+  emit(
+    event: "enable" | "disable" | "load" | "unload" | "install" | "uninstall",
+  ): void;
 }
 
 export interface ModOptions {
@@ -25,10 +27,19 @@ export interface ModOptions {
     };
   };
 
+  /**
+   * @deprecated Use handlers API instead
+   */
   entry?: {
     enable?: (mod: Mod) => void;
     disable?: (mod: Mod) => void;
   };
+
+  handlers?: {
+    on: "enable" | "disable" | "load" | "unload" | "install" | "uninstall";
+    conditions?: void;
+    handle: (mod: Mod) => void;
+  }[];
 }
 
 export function define(init: ModOptions | (() => ModOptions)): Mod {
@@ -36,16 +47,29 @@ export function define(init: ModOptions | (() => ModOptions)): Mod {
 
   if (!opt.name) throw new Error("[cML#define] Mod name is required");
 
+  const handlers = opt.handlers ?? [];
+
+  if (opt.entry?.enable)
+    handlers.unshift({ on: "load", handle: opt.entry.enable });
+
+  if (opt.entry?.disable)
+    handlers.unshift({ on: "unload", handle: opt.entry.disable });
+
   const mod: Mod = {
     name: opt.name,
+    enabled: false,
 
     opt,
 
     options: LocalStore.create(`cml.${opt.name}.options`),
     data: LocalStore.create(`cml.${opt.name}.data`),
 
-    enable: () => opt.entry?.enable?.(mod),
-    disable: () => opt.entry?.disable?.(mod),
+    emit: (event) => {
+      handlers.filter((h) => h.on === event).forEach((h) => h.handle?.(mod));
+
+      if (event === "enable") mod.enabled = true;
+      if (event === "disable") mod.enabled = false;
+    },
   };
 
   if (opt.options) {

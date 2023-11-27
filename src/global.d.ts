@@ -1,13 +1,19 @@
 import * as api from "./api";
 
+// Declare global cML
 declare global {
-  // Mod API
   const cML: typeof api;
+}
 
-  // Build Constants
-  const __VERSION__: string;
+// Build Constants
+declare global {
+  const VERSION: string;
+  const INDEX_VERSION: number;
+  const INDEX_URL: string;
+}
 
-  // Corru stuff
+// corru.observer globals
+declare global {
   const swup: any;
   const change: any;
   const env: { loading: boolean };

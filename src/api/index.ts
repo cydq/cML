@@ -1,9 +1,9 @@
 export * from "./define";
 export * from "./registry";
 export * from "./storage";
-export * from "./utils";
+export * from "./util";
 
 export const __meta__ = {
-  version: __VERSION__,
+  version: VERSION,
   loaded: false,
 };

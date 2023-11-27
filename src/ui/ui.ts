@@ -1,6 +1,7 @@
-import { registry } from "../../api";
-import { __hash__, __version__, data, index } from "..";
 import { createMenu, createSysbox, createInput } from "./utils";
+import { writeIndex } from "../util/mod_index";
+import { __hash__, index } from "../store/mod_index";
+import { data } from "../store/data";
 
 export function injectMenu() {
   const menu = createMenu({ title: "cModLoader", id: "cml" });
@@ -9,7 +10,8 @@ export function injectMenu() {
     createSysbox({
       title: "Info",
       description:
-        `cModLoader ${__VERSION__} by cydq\n\n` + `swup by ripplesplash`,
+        `cModLoader ${cML.__meta__.version} by cydq\n\n` +
+        `swup by ripplesplash`,
     }),
   );
 
@@ -101,16 +103,7 @@ export function injectMenu() {
                   .value,
               );
 
-              index.transaction((s) => {
-                s.clear();
-
-                s.set(__version__, json["version"]);
-                s.set(__hash__, json["hash"]);
-
-                for (const name of Object.keys(json["mods"])) {
-                  s.set(name, json["mods"][name]);
-                }
-              });
+              writeIndex(json);
 
               location.reload();
             },
@@ -135,7 +128,7 @@ export function injectMenu() {
 
   document.querySelector("#system-menu")?.appendChild(menu);
 
-  for (const mod of registry.getMods()) {
+  for (const mod of cML.registry.getMods()) {
     const info = index.get(mod.name);
 
     if (!info) {

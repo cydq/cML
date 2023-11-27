@@ -4,7 +4,10 @@ const TerserPlugin = require("terser-webpack-plugin");
 const pkg = require("./package.json");
 
 module.exports = {
-  entry: "./src/inject.ts",
+  target: "web",
+  entry: {
+    cModLoader: "./src/main.ts",
+  },
   module: {
     rules: [
       {
@@ -23,11 +26,13 @@ module.exports = {
   },
   plugins: [
     new webpack.DefinePlugin({
-      __VERSION__: JSON.stringify(pkg.version),
+      VERSION: JSON.stringify(pkg.version),
+      INDEX_VERSION: JSON.stringify(1),
+      INDEX_URL: JSON.stringify("https://cml.snowy.cafe/index.json"),
     }),
   ],
   output: {
-    filename: "cModLoader.js",
+    filename: "[name].js",
     path: path.resolve(__dirname, "dist"),
   },
   devServer: {
