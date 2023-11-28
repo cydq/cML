@@ -159,8 +159,8 @@ export function injectMenu() {
             {
               title: "Revert",
               action: () => {
-                for (const key of Object.keys(mod.opt.options as {})) {
-                  const option = mod.opt.options?.[key];
+                for (const key of Object.keys(mod.opt)) {
+                  const option = mod.opt[key];
                   if (!option) continue;
                   mod.options.set(key, option.default);
                 }
@@ -175,8 +175,8 @@ export function injectMenu() {
       }),
     );
 
-    for (const key of Object.keys(mod.opt.options as {})) {
-      const option = mod.opt.options?.[key];
+    for (const key of Object.keys(mod.opt)) {
+      const option = mod.opt[key];
       if (!option) continue;
 
       if (option.type === "check") {
@@ -219,7 +219,7 @@ export function injectMenu() {
                     const e = document.getElementById(
                       `cml-mod-${mod.name}-opt-${key}`,
                     );
-                    const def = mod.opt.options?.[key]?.default;
+                    const def = mod.opt[key]?.default;
                     mod.options.set(key, def);
                     (e as HTMLInputElement).value = def;
                   },
