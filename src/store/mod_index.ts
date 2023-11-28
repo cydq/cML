@@ -13,4 +13,9 @@ export interface IndexStore {
   };
 }
 
-export const index = cML.LocalStore.createTyped<IndexStore>("cml.index");
+export const index = cML.LocalStore.create<IndexStore>("cml.index");
+
+export function resetIndexStore() {
+  index.clear(false);
+  localStorage.removeItem("cml.index");
+}

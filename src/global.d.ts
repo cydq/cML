@@ -15,10 +15,12 @@ declare global {
 // corru.observer globals
 declare global {
   const swup: any;
-  const change: any;
   const env: { loading: boolean };
+  const flags: any;
   let oldPage: any;
   let page: any;
 
   function addResources(files: string[]): void;
+  function change(key: string, value: any): void;
+  function check(key: string, value?: any): any | false;
 }

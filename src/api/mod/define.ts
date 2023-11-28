@@ -1,5 +1,5 @@
 import { HandlerDefinition, Mod, ModEvent, OptionDefinition } from "./mod";
-import { LocalStore } from "../storage";
+import { SaveStore } from "../storage";
 import { registry } from "../registry";
 
 export interface ModBuilder {
@@ -46,8 +46,8 @@ export function define(name: string, fn: (builder: ModBuilder) => void) {
       return ctx.options;
     },
 
-    options: LocalStore.create(`cml.${name}.options`),
-    data: LocalStore.create(`cml.${name}.data`),
+    options: SaveStore.create(`cml.${name}.options`),
+    data: SaveStore.create(`cml.${name}.data`),
 
     emit(event: ModEvent) {
       if (event === "load" && ctx.loaded) return;

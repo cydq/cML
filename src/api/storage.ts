@@ -29,21 +29,18 @@ export interface TypedStore<T> {
   keys(): IterableIterator<keyof T>;
 }
 
-export class LocalStore implements Store {
-  private readonly cache = new Map<string | symbol, any>();
+abstract class BaseStore implements Store {
+  protected readonly cache = new Map<string | symbol, any>();
 
-  private constructor(readonly key: string) {
-    const data = localStorage.getItem(key);
-
-    if (data) {
-      const obj = JSON.parse(data);
-
-      for (const key in obj) {
+  protected constructor(
+    readonly key: string,
+    initialData?: Record<string | symbol, any>,
+  ) {
+    if (initialData)
+      for (const key in initialData)
         if (key.startsWith("__") && key.endsWith("__"))
-          this.cache.set(Symbol.for(key.slice(2, -2)), obj[key]);
-        else this.cache.set(key, obj[key]);
-      }
-    }
+          this.cache.set(Symbol.for(key.slice(2, -2)), initialData[key]);
+        else this.cache.set(key, initialData[key]);
   }
 
   get<T>(key: string | symbol): T | undefined;
@@ -76,6 +73,11 @@ export class LocalStore implements Store {
     return this.cache.keys();
   }
 
+  protected abstract __commit__(
+    key: string,
+    obj: Record<string | symbol, any>,
+  ): void;
+
   commit(now = false) {
     const commit = () => {
       const obj: Record<string | symbol, any> = {};
@@ -86,7 +88,7 @@ export class LocalStore implements Store {
         else obj[key] = this.cache.get(key);
       }
 
-      localStorage.setItem(this.key, JSON.stringify(obj));
+      this.__commit__(this.key, obj);
     };
 
     if (now) commit();
@@ -115,12 +117,36 @@ export class LocalStore implements Store {
 
     this.commit(now);
   }
+}
 
-  static create(key: string) {
-    return new LocalStore(key);
+export class LocalStore extends BaseStore {
+  private constructor(key: string) {
+    super(key, JSON.parse(localStorage.getItem(key) ?? "{}"));
   }
 
-  static createTyped<T>(key: string) {
-    return new LocalStore(key) as unknown as TypedStore<T>;
+  override __commit__(key: string, obj: Record<string | symbol, any>) {
+    localStorage.setItem(key, JSON.stringify(obj));
+  }
+
+  static create(key: string): Store;
+  static create<T>(key: string): TypedStore<T>;
+  static create(key: string) {
+    return new LocalStore(key) as any;
+  }
+}
+
+export class SaveStore extends BaseStore {
+  private constructor(key: string) {
+    super(key, check(key) ?? {});
+  }
+
+  override __commit__(key: string, obj: Record<string | symbol, any>) {
+    change(key, obj);
+  }
+
+  static create(key: string): Store;
+  static create<T>(key: string): TypedStore<T>;
+  static create<T>(key: string) {
+    return new SaveStore(key) as any;
   }
 }

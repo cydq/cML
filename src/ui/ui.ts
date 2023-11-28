@@ -1,7 +1,8 @@
 import { createMenu, createSysbox, createInput } from "./utils";
 import { writeIndex } from "../util/mod_index";
-import { __hash__, index } from "../store/mod_index";
-import { data } from "../store/data";
+import { __hash__, index, resetIndexStore } from "../store/mod_index";
+import { data, resetAllSaveStores, resetDataStore } from "../store/data";
+import { installMod, uninstallMod } from "../util/lifecycle";
 
 export function injectMenu() {
   const menu = createMenu({ title: "cModLoader", id: "cml" });
@@ -19,7 +20,7 @@ export function injectMenu() {
     createSysbox({
       title: "Mod Index",
       description:
-        `There are ${[...index.keys()].length - 2} mod(s) in the index.\n` +
+        `There are ${[...index.keys()].length - 2} mods in the index.\n` +
         `The index was last updated on ${new Date(index.get(__hash__) ?? 0)
           .toISOString()
           .slice(0, 10)}`,
@@ -28,7 +29,7 @@ export function injectMenu() {
           {
             title: "Refresh Index",
             action: () => {
-              index.clear();
+              resetIndexStore();
               location.reload();
             },
           },
@@ -46,21 +47,17 @@ export function injectMenu() {
           {
             title: "Reset CML Data",
             action: () => {
-              index.clear();
-              data.clear();
+              resetIndexStore();
+              resetDataStore();
+
               location.reload();
             },
           },
           {
             title: "Reset All Data",
             action: () => {
-              for (let i = 0; i < localStorage.length; i++) {
-                const key = localStorage.key(i);
-
-                if (key?.startsWith("cml")) {
-                  localStorage.removeItem(key);
-                }
-              }
+              resetIndexStore();
+              resetAllSaveStores();
 
               location.reload();
             },
@@ -147,12 +144,9 @@ export function injectMenu() {
         buttons: [
           [
             {
-              title: "Disable",
+              title: "Remove",
               action: () => {
-                data.set(
-                  "enabled",
-                  data.get("enabled")?.filter((s) => s !== mod.name) ?? [],
-                );
+                uninstallMod(mod);
                 location.reload();
               },
             },
@@ -260,8 +254,8 @@ export function injectMenu() {
           [
             {
               title: "Add",
-              action: () => {
-                data.set("enabled", [...data.get("enabled", []), name]);
+              action: async () => {
+                await installMod(name);
                 location.reload();
               },
             },
