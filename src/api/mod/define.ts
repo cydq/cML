@@ -57,12 +57,15 @@ export function define(name: string, fn: (builder: ModBuilder) => void) {
 
       ctx.handlers
         .filter((handler: HandlerDefinition) =>
-          handler.condition.split(" ").every((condition) => {
-            if (condition.startsWith("@"))
-              return condition.slice(1) === cML.getPage();
+          handler.condition
+            .trim()
+            .split(" ")
+            .every((condition) => {
+              if (condition.startsWith("@"))
+                return condition.slice(1) === cML.getPage();
 
-            return condition === event;
-          }),
+              return condition === event;
+            }),
         )
         .forEach((h) => h.handle?.(mod));
 
