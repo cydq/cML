@@ -14,6 +14,14 @@ export interface Mod {
   ): void;
 }
 
+interface Handler {
+  on: "enable" | "disable" | "load" | "unload" | "install" | "uninstall";
+  conditions?: {
+    page?: string;
+  };
+  handle: (mod: Mod) => void;
+}
+
 export interface ModOptions {
   name: string;
   autoRegister?: boolean;
@@ -35,11 +43,7 @@ export interface ModOptions {
     disable?: (mod: Mod) => void;
   };
 
-  handlers?: {
-    on: "enable" | "disable" | "load" | "unload" | "install" | "uninstall";
-    conditions?: void;
-    handle: (mod: Mod) => void;
-  }[];
+  handlers?: Handler[];
 }
 
 export function define(init: ModOptions | (() => ModOptions)): Mod {
@@ -65,7 +69,23 @@ export function define(init: ModOptions | (() => ModOptions)): Mod {
     data: LocalStore.create(`cml.${opt.name}.data`),
 
     emit: (event) => {
-      handlers.filter((h) => h.on === event).forEach((h) => h.handle?.(mod));
+      const match = (handler: Handler) => {
+        if (!handler.conditions) return true;
+
+        if (
+          handler.conditions.page &&
+          handler.conditions.page !== cML.getPage()
+        ) {
+          return false;
+        }
+
+        return true;
+      };
+
+      handlers
+        .filter((h) => h.on === event)
+        .filter((h) => !h.conditions || h.conditions.page === cML.getPage())
+        .forEach((h) => h.handle?.(mod));
 
       if (event === "enable") mod.enabled = true;
       if (event === "disable") mod.enabled = false;

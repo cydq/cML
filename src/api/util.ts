@@ -19,3 +19,7 @@ export async function waitForLoad(timeout = 50): Promise<void> {
 export async function delay(duration: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, duration));
 }
+
+export function getPage() {
+  return document.body.getAttribute("page");
+}
