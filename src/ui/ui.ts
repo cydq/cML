@@ -137,21 +137,35 @@ export function injectMenu() {
 
     const modMenu = createMenu({ title: mod.name, id: "cml-mod-" + mod.name });
 
+    const priority = createInput({
+      id: `cml-mod-${mod.name}-load-order`,
+      placeholder: "0",
+      data: mod.data.get("load-priority", 0).toString(),
+    });
+
+    priority.onchange = () => {
+      const num = parseInt(priority.value);
+      if (!num || isNaN(num)) return;
+
+      mod.data.set("load-priority", num);
+    };
+
     modMenu.appendChild(
       createSysbox({
         title: "Mod Info",
         description: `v${info.version} by ${info.author}\n\n${info.description}`,
+        intermediate: [priority],
         buttons: [
           [
             {
-              title: "Remove",
+              title: "Remove Mod",
               action: () => {
                 uninstallMod(mod);
                 location.reload();
               },
             },
             {
-              title: "Revert",
+              title: "Revert Settings",
               action: () => {
                 for (const key of Object.keys(mod.opt)) {
                   const option = mod.opt[key];

@@ -27,7 +27,12 @@ function createRegistry(): Registry {
     async emit(event) {
       let loaded = 0;
 
-      for (const mod of mods.values()) {
+      const allMods = [...mods.values()].sort(
+        (a, b) =>
+          b.data.get("load-priority", 0) - a.data.get("load-priority", 0),
+      );
+
+      for (const mod of allMods) {
         try {
           await mod.emit(event);
           loaded++;
