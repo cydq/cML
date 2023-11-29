@@ -49,7 +49,7 @@ export function InfoBlock() {
           <Definition definition="DISCORD::'cydq'">cy</Definition>
           <br />
           <br />
-          swupmod by{" "}
+          swupmod and octahedron by{" "}
           <Definition definition="DISCORD::'ripplesplash'">
             !!__aurora__!!
           </Definition>
