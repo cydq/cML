@@ -62,20 +62,8 @@ export function ModBlock(props: { mod: Mod }) {
 
         <ButtonRow>
           <Button name="Remove Mod" action={() => uninstallMod(props.mod)} />
-
-          <Button
-            name="Revert Settings"
-            action={() => {
-              delete cML.__meta__.store.data.mods[props.mod.name].options;
-            }}
-          />
-
-          <Button
-            name="Reset Data"
-            action={() => {
-              delete cML.__meta__.store.data.mods[props.mod.name].data;
-            }}
-          />
+          <Button name="Revert" action={props.mod.resetOptions} />
+          <Button name="Reset Data" action={props.mod.resetData} />
         </ButtonRow>
       </Sysbox>
 
@@ -83,8 +71,6 @@ export function ModBlock(props: { mod: Mod }) {
         const option = props.mod.optionDefintions[key];
 
         if (option.type === "check") {
-          const [value, setValue] = useState(options[key] ?? false);
-
           const selectedStyle = {
             color: "var(--dark-color)",
             background: "var(--friend-color)",
@@ -97,14 +83,14 @@ export function ModBlock(props: { mod: Mod }) {
               <ButtonRow>
                 <Button
                   name="Off"
-                  action={() => setValue((props.mod.options[key] = false))}
-                  style={!value ? selectedStyle : {}}
+                  action={() => (props.mod.options[key] = false)}
+                  style={!options[key] ? selectedStyle : {}}
                 />
 
                 <Button
                   name="On"
-                  action={() => setValue((props.mod.options[key] = true))}
-                  style={value ? selectedStyle : {}}
+                  action={() => (props.mod.options[key] = true)}
+                  style={options[key] ? selectedStyle : {}}
                 />
               </ButtonRow>
             </Sysbox>
@@ -112,30 +98,20 @@ export function ModBlock(props: { mod: Mod }) {
         }
 
         if (option.type === "input") {
-          const [value, setValue] = useState(options[key] ?? "");
-
           return (
             <Sysbox title={option.name ?? "Unnamed option"}>
               <Syscription>{option.description}</Syscription>
 
               <Input
                 placeholder={option.default}
-                value={value}
-                update={setValue}
+                value={options[key]}
+                update={(s) => (props.mod.options[key] = s)}
               />
 
               <ButtonRow>
                 <Button
                   name="Revert"
-                  action={() => {
-                    props.mod.options[key] = option.default;
-                    setValue(option.default);
-                  }}
-                />
-
-                <Button
-                  name="Save"
-                  action={() => (props.mod.options[key] = value)}
+                  action={() => (props.mod.options[key] = option.default)}
                 />
               </ButtonRow>
             </Sysbox>

@@ -1,5 +1,6 @@
 import { data } from "../store/data";
 import { index } from "../store/mod_index";
+import { registry } from "../api";
 
 export async function initMods(): Promise<void> {
   const enabled = data().enabled || [];
@@ -19,4 +20,9 @@ export async function initMods(): Promise<void> {
       })
       .filter((mod: any) => !!mod) as string[],
   );
+
+  window.onbeforeunload = () => {
+    registry.emit("unload");
+    registry.emit("disable");
+  };
 }

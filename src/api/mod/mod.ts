@@ -9,6 +9,9 @@ export interface Mod<TOpt extends {} = any, TData extends {} = any> {
 
   readonly optionDefintions: Record<string, OptionDefinition>;
 
+  resetOptions(): void;
+  resetData(): void;
+
   option(name: string): OptionDefinition | undefined;
   option(name: string, options: OptionDefinition): void;
 

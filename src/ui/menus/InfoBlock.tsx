@@ -18,8 +18,7 @@ export function InfoBlock() {
   const idx = useSnapshot(index);
   const dat = useSnapshot(data());
 
-  const [customIndexData, setCustomIndexData] = useState(dat.indexUrl ?? "");
-  const [customIndexUrl, setCustomIndexUrl] = useState("");
+  const [customIndexData, setCustomIndexData] = useState("");
 
   const refreshIndex = async () => {
     resetIndexStore();
@@ -43,11 +42,11 @@ export function InfoBlock() {
       <Sysbox title="Info">
         <Syscription>
           cModLoader {cML.__meta__.version} by{" "}
-          <Definition definition="GITHUB::'cydq'">cy</Definition>
+          <Definition definition="DISCORD::'cydq'">cy</Definition>
           <br />
           <br />
           swupmod by{" "}
-          <Definition definition="GITHUB::'ripplesplash'">
+          <Definition definition="DISCORD::'ripplesplash'">
             !!__aurora__!!
           </Definition>
         </Syscription>
@@ -58,7 +57,7 @@ export function InfoBlock() {
           There are {Object.keys(idx.mods).length} mods in the index.
           <br />
           The index was last updated on{" "}
-          {new Date(idx.hash ?? 0).toISOString().slice(0, 10)}
+          {new Date(idx.hash ?? 0).toISOString().slice(0, 10)}.
         </Syscription>
 
         <ButtonRow>
@@ -86,8 +85,8 @@ export function InfoBlock() {
 
         <Input
           placeholder="https://cml.snowy.cafe/index.json"
-          value={customIndexUrl}
-          update={setCustomIndexUrl}
+          value={dat.indexUrl ?? ""}
+          update={(s) => (data().indexUrl = s)}
         />
 
         <Input
@@ -113,15 +112,7 @@ export function InfoBlock() {
             }}
           />
 
-          <Button
-            name="Save URL"
-            action={async () => {
-              data().indexUrl =
-                customIndexUrl !== "" ? customIndexUrl : undefined;
-
-              await refreshIndex();
-            }}
-          />
+          <Button name="Save URL" action={() => refreshIndex()} />
         </ButtonRow>
       </Sysbox>
     </Sysblock>

@@ -80,6 +80,26 @@ export function define<TOpt extends {} = any, TData extends {} = any>(
       if (event === "load") ctx.loaded = true;
       if (event === "unload") ctx.loaded = false;
     },
+
+    resetOptions() {
+      for (const key of Object.keys(ctx.options)) {
+        const option = ctx.options[key];
+
+        if (option.default !== undefined) {
+          (mod.options as any)[key] = option.default;
+        } else {
+          delete (mod.options as any)[key];
+        }
+      }
+    },
+
+    resetData() {
+      cML.__meta__.store.data.mods[name].data = {} as any;
+
+      for (const key of Object.keys(ctx.options)) {
+        delete (mod.data as any)[key];
+      }
+    },
   } satisfies Mod<TOpt, TData>;
 
   fn(mod, builder);
