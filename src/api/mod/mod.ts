@@ -1,15 +1,18 @@
-import { Store } from "../storage";
-
-export interface Mod {
+export interface Mod<TOpt extends {} = any, TData extends {} = any> {
   readonly name: string;
+
   readonly enabled: boolean;
   readonly loaded: boolean;
 
-  readonly opt: Record<string, OptionDefinition>;
+  readonly options: TOpt;
+  readonly data: TData;
 
-  readonly options: Store;
-  readonly data: Store;
+  readonly optionDefintions: Record<string, OptionDefinition>;
 
+  option(name: string): OptionDefinition | undefined;
+  option(name: string, options: OptionDefinition): void;
+
+  on(condition: string, handle: (mod: Mod) => void): void;
   emit(event: ModEvent): void;
 }
 
@@ -18,11 +21,6 @@ export interface OptionDefinition {
   default?: any;
   name?: string;
   description?: string;
-}
-
-export interface HandlerDefinition {
-  condition: string;
-  handle(mod: Mod): void;
 }
 
 export type ModEvent =

@@ -1,21 +1,20 @@
-export const __version__ = Symbol.for("cml_version");
-export const __hash__ = Symbol.for("cml_hash");
-
 export interface IndexStore {
-  [__version__]: number;
-  [__hash__]: number;
+  version: number;
+  hash: number;
 
-  [name: string]: {
-    version: string;
-    description?: string;
-    author?: string;
-    entry: string;
+  mods: {
+    [name: string]: {
+      version: string;
+      description?: string;
+      author?: string;
+      entry: string;
+    };
   };
 }
 
-export const index = cML.LocalStore.create<IndexStore>("cml.index");
+export const index = cML.createLocalStore<IndexStore>("index");
 
 export function resetIndexStore() {
-  index.clear(false);
+  index.version = 0;
   localStorage.removeItem("cml.index");
 }

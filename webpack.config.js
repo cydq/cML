@@ -11,18 +11,33 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.ts?$/,
-        use: "ts-loader",
+        test: /\.ts?x?$/,
+        use: "babel-loader",
         exclude: /node_modules/,
       },
     ],
   },
   optimization: {
     minimize: true,
-    minimizer: [new TerserPlugin()],
+    minimizer: [
+      new TerserPlugin({
+        extractComments: false,
+        terserOptions: {
+          format: {
+            comments: false,
+          },
+        },
+      }),
+    ],
   },
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
+    alias: {
+      react: "preact/compat",
+      "react-dom/test-utils": "preact/test-utils",
+      "react-dom": "preact/compat",
+      "react/jsx-runtime": "preact/jsx-runtime",
+    },
   },
   plugins: [
     new webpack.DefinePlugin({

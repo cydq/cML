@@ -1,14 +1,14 @@
 import { data } from "../store/data";
-import { __hash__, __version__, index } from "../store/mod_index";
+import { index } from "../store/mod_index";
 
 export async function checkIndex() {
-  if (index.get(__version__) === INDEX_VERSION) return;
+  if (index.version === INDEX_VERSION) return;
 
   console.log("[cML] Index is outdated!");
 
   await fetchIndex();
 
-  const newVersion = index.get(__version__);
+  const newVersion = index.version;
   if (newVersion === INDEX_VERSION) return;
 
   throw new Error(
@@ -17,7 +17,7 @@ export async function checkIndex() {
 }
 
 export async function fetchIndex() {
-  const indexLocation = data.get("indexUrl") ?? INDEX_URL;
+  const indexLocation = data().indexUrl ?? INDEX_URL;
 
   const res = await fetch(indexLocation);
   if (!res.ok) throw new Error("[cML] Failed to fetch index");
@@ -26,14 +26,7 @@ export async function fetchIndex() {
 }
 
 export function writeIndex(json: any) {
-  index.transaction((s) => {
-    s.clear();
-
-    s.set(__version__, json["version"]);
-    s.set(__hash__, json["hash"]);
-
-    for (const name of Object.keys(json["mods"])) {
-      s.set(name, json["mods"][name]);
-    }
-  });
+  index.version = json["version"];
+  index.hash = json["hash"];
+  index.mods = json["mods"];
 }

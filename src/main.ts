@@ -5,11 +5,15 @@ import "./init/api";
 import { initModIndex } from "./init/mod_index";
 import { initMods } from "./init/mods";
 import { injectMenu } from "./ui/ui";
+import { initStore } from "./init/stores";
 
 (async function init() {
   if (cML.__meta__.loaded) {
     return console.log("[cML] Already loaded.. Skipping initialization");
   }
+
+  // Initialize storage
+  initStore();
 
   // Initialize mod index
   await initModIndex();

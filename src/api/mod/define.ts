@@ -1,15 +1,20 @@
-import { HandlerDefinition, Mod, ModEvent, OptionDefinition } from "./mod";
-import { SaveStore } from "../storage";
+import { Mod, ModEvent, OptionDefinition } from "./mod";
 import { registry } from "../registry";
+import { createSaveStore } from "../store";
+
+interface HandlerDefinition {
+  condition: string;
+  handle(mod: Mod): void;
+}
 
 export interface ModBuilder {
   autoRegister: boolean;
-
-  option(name: string, options: OptionDefinition): void;
-  on(condition: string, handle: (mod: Mod) => void): void;
 }
 
-export function define(name: string, fn: (builder: ModBuilder) => void) {
+export function define<TOpt extends {} = any, TData extends {} = any>(
+  name: string,
+  fn: (mod: Mod<TOpt, TData>, builder: ModBuilder) => void,
+) {
   const ctx = {
     enabled: false,
     loaded: false,
@@ -17,17 +22,7 @@ export function define(name: string, fn: (builder: ModBuilder) => void) {
     handlers: [] as HandlerDefinition[],
   };
 
-  const builder = {
-    autoRegister: true,
-
-    option: (name: string, options: OptionDefinition) =>
-      (ctx.options[name] = options),
-
-    on: (condition: string, handle: (mod: Mod) => void) =>
-      ctx.handlers.push({ condition, handle }),
-  };
-
-  fn(builder);
+  const builder = { autoRegister: true };
 
   const mod = {
     get name() {
@@ -42,12 +37,23 @@ export function define(name: string, fn: (builder: ModBuilder) => void) {
       return ctx.enabled;
     },
 
-    get opt() {
+    get options() {
+      return createSaveStore<TOpt>(`mods.${name}.options`);
+    },
+
+    get data() {
+      return createSaveStore<TData>(`mods.${name}.data`);
+    },
+
+    get optionDefintions() {
       return ctx.options;
     },
 
-    options: SaveStore.create(`cml.${name}.options`),
-    data: SaveStore.create(`cml.${name}.data`),
+    option: (name: string, options?: OptionDefinition) =>
+      options ? (ctx.options[name] = options) : ctx.options[name],
+
+    on: (condition: string, handle: (mod: Mod) => void) =>
+      ctx.handlers.push({ condition, handle }),
 
     emit(event: ModEvent) {
       if (event === "load" && ctx.loaded) return;
@@ -74,12 +80,19 @@ export function define(name: string, fn: (builder: ModBuilder) => void) {
       if (event === "load") ctx.loaded = true;
       if (event === "unload") ctx.loaded = false;
     },
-  } satisfies Mod;
+  } satisfies Mod<TOpt, TData>;
+
+  fn(mod, builder);
 
   if (ctx.options) {
+    const mopt = mod.options as any;
+
     for (const key of Object.keys(ctx.options)) {
       const option = ctx.options[key];
-      if (!mod.options.has(key)) mod.options.set(key, option.default);
+
+      if (!(key in mopt)) {
+        mopt[key] = option.default;
+      }
     }
   }
 

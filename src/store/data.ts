@@ -17,17 +17,12 @@ export interface DataStore {
   indexUrl: string | undefined;
 }
 
-export const data = cML.SaveStore.create<DataStore>("cml");
+export const data = () => cML.createSaveStore<DataStore>("data");
 
 export function resetDataStore() {
-  data.clear(false);
-  delete flags["cml"];
-  localStorage.setItem("flags", flags);
+  delete cML.__meta__.store.data.data;
 }
 
 export function resetAllSaveStores() {
-  for (const key of Object.keys(flags))
-    if (key === "cml" || key.startsWith("cml.")) delete flags[key];
-
-  resetDataStore();
+  cML.__meta__.store.data = {};
 }

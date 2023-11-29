@@ -8,7 +8,7 @@ export async function addResources(
 
 export async function waitForLoad(timeout = 50): Promise<void> {
   return new Promise((resolve) => {
-    setTimeout(function load() {
+    setTimeout(function load(): any {
       if (env.loading) return setTimeout(load, timeout);
 
       resolve();

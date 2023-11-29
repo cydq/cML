@@ -3,7 +3,7 @@ import { index } from "../store/mod_index";
 import { Mod, registry } from "../api";
 
 export async function installMod(name: string) {
-  const info = index.get(name);
+  const info = index.mods[name];
   if (!info) return;
 
   await cML.addResources([info.entry]);
@@ -13,7 +13,7 @@ export async function installMod(name: string) {
 
   mod.emit("install");
 
-  data.set("enabled", [...data.get("enabled", []), name]);
+  data().enabled = [...(data().enabled || []), name];
 }
 
 export function uninstallMod(mod: Mod) {
@@ -21,8 +21,5 @@ export function uninstallMod(mod: Mod) {
   mod.emit("disable");
   mod.emit("uninstall");
 
-  data.set(
-    "enabled",
-    data.get("enabled", []).filter((s) => s !== mod.name),
-  );
+  data().enabled = data().enabled.filter((s) => s !== mod.name);
 }

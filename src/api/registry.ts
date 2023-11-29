@@ -1,6 +1,10 @@
+import { proxyMap } from "valtio/utils";
 import { Mod } from ".";
 
 export interface Registry {
+  readonly mods: Map<string, Mod>;
+  readonly size: number;
+
   register(mod: Mod): void;
   getMod(name: string): Mod | undefined;
   getMods(): Mod[];
@@ -9,9 +13,11 @@ export interface Registry {
 }
 
 function createRegistry(): Registry {
-  const mods = new Map<string, Mod>();
+  const mods = proxyMap<string, Mod>();
 
   return {
+    mods,
+
     register(mod: Mod) {
       mods.set(mod.name, mod);
     },
@@ -22,6 +28,10 @@ function createRegistry(): Registry {
 
     getMods() {
       return [...mods.values()];
+    },
+
+    get size() {
+      return mods.size;
     },
 
     async emit(event) {
@@ -45,4 +55,5 @@ function createRegistry(): Registry {
     },
   };
 }
+
 export const registry = createRegistry();
