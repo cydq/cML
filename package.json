@@ -2,7 +2,7 @@
   "name": "cmodloader",
   "private": true,
   "author": "cydq <brian@ngsh.ca>",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "license": "MIT",
   "browserslist": [
     "> 0.25%, not dead"
