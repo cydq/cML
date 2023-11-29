@@ -13,11 +13,13 @@ import {
 import { index, resetIndexStore } from "../../store/mod_index";
 import { data, resetAllSaveStores, resetDataStore } from "../../store/data";
 import { checkIndex, writeIndex } from "../../util/mod_index";
+import { Octahedron } from "../components/Octahedron";
 
 export function InfoBlock() {
   const idx = useSnapshot(index);
   const dat = useSnapshot(data());
 
+  const [clicks, setClicks] = useState(0);
   const [customIndexData, setCustomIndexData] = useState("");
 
   const refreshIndex = async () => {
@@ -39,6 +41,8 @@ export function InfoBlock() {
 
   return (
     <Sysblock title="cModLoader">
+      <Octahedron onClick={() => setClicks(clicks + 1)} />
+
       <Sysbox title="Info">
         <Syscription>
           cModLoader {cML.__meta__.version} by{" "}
@@ -77,44 +81,46 @@ export function InfoBlock() {
         </ButtonRow>
       </Sysbox>
 
-      <Sysbox title="Developer Settings">
-        <Syscription>
-          Advanced settings that mod developers may find useful. Only modify
-          settings in this menu if you know what you're doing!
-        </Syscription>
+      {clicks >= 10 && (
+        <Sysbox title="Developer Settings" warning>
+          <Syscription>
+            Advanced settings that mod developers may find useful. Only modify
+            settings in this menu if you know what you're doing!
+          </Syscription>
 
-        <Input
-          placeholder="https://cml.snowy.cafe/index.json"
-          value={dat.indexUrl ?? ""}
-          update={(s) => (data().indexUrl = s)}
-        />
-
-        <Input
-          placeholder="{ ... json ... }"
-          value={customIndexData}
-          update={setCustomIndexData}
-        />
-
-        <ButtonRow>
-          <Button
-            name="Reset Default"
-            action={() => {
-              delete data().indexUrl;
-              resetIndexStore();
-            }}
+          <Input
+            placeholder="https://cml.snowy.cafe/index.json"
+            value={dat.indexUrl ?? ""}
+            update={(s) => (data().indexUrl = s)}
           />
 
-          <Button
-            name="Save Data"
-            action={async () => {
-              writeIndex(JSON.parse(customIndexData));
-              await refreshIndex();
-            }}
+          <Input
+            placeholder="{ ... json ... }"
+            value={customIndexData}
+            update={setCustomIndexData}
           />
 
-          <Button name="Save URL" action={() => refreshIndex()} />
-        </ButtonRow>
-      </Sysbox>
+          <ButtonRow>
+            <Button
+              name="Reset Default"
+              action={() => {
+                delete data().indexUrl;
+                resetIndexStore();
+              }}
+            />
+
+            <Button
+              name="Save Data"
+              action={async () => {
+                writeIndex(JSON.parse(customIndexData));
+                await refreshIndex();
+              }}
+            />
+
+            <Button name="Save URL" action={() => refreshIndex()} />
+          </ButtonRow>
+        </Sysbox>
+      )}
     </Sysblock>
   );
 }
