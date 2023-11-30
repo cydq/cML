@@ -8,10 +8,10 @@ import {
   ButtonRow,
   Button,
   Input,
-} from "../components";
-import type { Mod } from "../../api";
-import { index } from "../../store/mod_index";
-import { uninstallMod } from "../../util/lifecycle";
+} from "../components/index.js";
+import type { Mod } from "../../api/index.js";
+import { index } from "../../store/mod_index.js";
+import { uninstallMod } from "../../util/lifecycle.js";
 
 export function ModBlock(props: { mod: Mod }) {
   const info = useSnapshot(index).mods[props.mod.name];

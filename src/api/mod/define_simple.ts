@@ -1,5 +1,5 @@
-import { define } from "./define";
-import { Mod } from "./mod";
+import { define } from "./define.js";
+import { Mod } from "./mod.js";
 
 export const defineSimple = (
   name: string,

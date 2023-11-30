@@ -1,5 +1,5 @@
 import { proxyMap } from "valtio/utils";
-import { Mod } from ".";
+import { Mod } from "./index.js";
 
 export interface Registry {
   readonly mods: Map<string, Mod>;

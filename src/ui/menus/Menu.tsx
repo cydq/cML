@@ -1,9 +1,9 @@
 import { useSnapshot } from "valtio";
-import { InfoBlock } from "./InfoBlock";
-import { IndexBlock } from "./IndexBlock";
-import { ModBlock } from "./ModBlock";
-import { data } from "../../store/data";
-import { registry } from "../../api";
+import { InfoBlock } from "./InfoBlock.js";
+import { IndexBlock } from "./IndexBlock.js";
+import { ModBlock } from "./ModBlock.js";
+import { data } from "../../store/data.js";
+import { registry } from "../../api/index.js";
 
 export function Menu() {
   return (

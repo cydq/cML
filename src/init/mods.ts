@@ -1,6 +1,6 @@
-import { data } from "../store/data";
-import { index } from "../store/mod_index";
-import { registry } from "../api";
+import { data } from "../store/data.js";
+import { index } from "../store/mod_index.js";
+import { registry } from "../api/index.js";
 
 export async function initMods(): Promise<void> {
   const enabled = data().enabled || [];

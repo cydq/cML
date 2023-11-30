@@ -1,5 +1,5 @@
 import { render } from "preact";
-import { Menu } from "./menus/Menu";
+import { Menu } from "./menus/Menu.js";
 
 export function injectMenu() {
   const root = document.createElement("div");

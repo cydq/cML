@@ -1,11 +1,11 @@
 /// <reference path="./global.d.ts" />
 
-import "./init/api";
+import "./init/api.js";
 
-import { initModIndex } from "./init/mod_index";
-import { initMods } from "./init/mods";
-import { injectMenu } from "./ui/ui";
-import { initStore } from "./init/stores";
+import { initModIndex } from "./init/mod_index.js";
+import { initMods } from "./init/mods.js";
+import { injectMenu } from "./ui/ui.js";
+import { initStore } from "./init/stores.js";
 
 (async function init() {
   if (cML.__meta__.loaded) {

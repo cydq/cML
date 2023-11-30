@@ -1,10 +1,10 @@
 import { proxy } from "valtio";
 
-export * from "./mod/define";
-export * from "./mod/mod";
-export * from "./registry";
-export * from "./store";
-export * from "./util";
+export * from "./mod/define.js";
+export * from "./mod/mod.js";
+export * from "./registry.js";
+export * from "./store.js";
+export * from "./util.js";
 
 export const __meta__ = {
   version: VERSION,

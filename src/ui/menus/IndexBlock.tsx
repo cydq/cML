@@ -6,10 +6,10 @@ import {
   Sysblock,
   ButtonRow,
   Button,
-} from "../components";
-import { index } from "../../store/mod_index";
-import { installMod } from "../../util/lifecycle";
-import { data } from "../../store/data";
+} from "../components/index.js";
+import { index } from "../../store/mod_index.js";
+import { installMod } from "../../util/lifecycle.js";
+import { data } from "../../store/data.js";
 
 export function IndexBlock() {
   const idx = useSnapshot(index);

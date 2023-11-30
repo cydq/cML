@@ -1,6 +1,6 @@
-import { data } from "../store/data";
-import { index } from "../store/mod_index";
-import { Mod, registry } from "../api";
+import { data } from "../store/data.js";
+import { index } from "../store/mod_index.js";
+import { Mod, registry } from "../api/index.js";
 
 export async function installMod(name: string) {
   const info = index.mods[name];

@@ -1,4 +1,4 @@
-import * as api from "./api";
+import * as api from "./api/index.js";
 
 // Declare global cML
 declare global {

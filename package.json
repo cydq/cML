@@ -4,14 +4,15 @@
   "author": "cydq <brian@ngsh.ca>",
   "version": "0.1.1",
   "license": "MIT",
+  "type": "module",
   "browserslist": [
     "> 0.25%, not dead"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "develop": "webpack-dev-server --mode development",
-    "build3": "tsup",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "build:dev": "webpack --mode development"
   },
   "dependencies": {
     "@babel/runtime": "^7.23.5",

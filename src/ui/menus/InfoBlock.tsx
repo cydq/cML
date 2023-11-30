@@ -9,11 +9,11 @@ import {
   ButtonRow,
   Button,
   Input,
-} from "../components";
-import { index, resetIndexStore } from "../../store/mod_index";
-import { data, resetAllSaveStores, resetDataStore } from "../../store/data";
-import { checkIndex, writeIndex } from "../../util/mod_index";
-import { Octahedron } from "../components/Octahedron";
+} from "../components/index.js";
+import { index, resetIndexStore } from "../../store/mod_index.js";
+import { data, resetAllSaveStores, resetDataStore } from "../../store/data.js";
+import { checkIndex, writeIndex } from "../../util/mod_index.js";
+import { Octahedron } from "../components/Octahedron.js";
 
 export function InfoBlock() {
   const idx = useSnapshot(index);

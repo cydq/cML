@@ -1,14 +1,17 @@
-const webpack = require("webpack");
-const path = require("path");
-const TerserPlugin = require("terser-webpack-plugin");
-const pkg = require("./package.json");
+import path from "path";
+import { fileURLToPath } from "url";
 
-module.exports = {
+import webpack from "webpack";
+import TerserPlugin from "terser-webpack-plugin";
+
+import pkg from "./package.json" assert { type: "json" };
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+export default {
   mode: "production",
   target: "web",
-  entry: {
-    cModLoader: "./src/main.ts",
-  },
+  entry: "./src/main.ts",
   module: {
     rules: [
       {
@@ -17,7 +20,7 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test: /\.css$/i,
+        test: /\.s?css$/i,
         use: [
           { loader: "style-loader", options: { injectType: "styleTag" } },
           "css-loader",
@@ -39,7 +42,10 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: [".tsx", ".ts", ".js", ".css"],
+    extensions: [".tsx", ".ts", ".js", ".css", ".scss"],
+    extensionAlias: {
+      ".js": [".ts", ".tsx", ".js", ".jsx"],
+    },
     alias: {
       react: "preact/compat",
       "react-dom/test-utils": "preact/test-utils",
@@ -55,7 +61,7 @@ module.exports = {
     }),
   ],
   output: {
-    filename: "[name].js",
+    filename: "cModLoader.js",
     path: path.resolve(__dirname, "dist"),
   },
   devServer: {

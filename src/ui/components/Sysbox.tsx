@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Syscription } from "./Syscription";
+import { Syscription } from "./Syscription.js";
 
 export function Sysbox(props: {
   title: string;

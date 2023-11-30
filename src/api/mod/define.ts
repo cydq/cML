@@ -1,6 +1,6 @@
-import { Mod, ModEvent, OptionDefinition } from "./mod";
-import { registry } from "../registry";
-import { createSaveStore } from "../store";
+import { Mod, ModEvent, OptionDefinition } from "./mod.js";
+import { registry } from "../registry.js";
+import { createSaveStore } from "../store.js";
 
 interface HandlerDefinition {
   condition: string;

@@ -1,5 +1,5 @@
-import { data } from "../store/data";
-import { index } from "../store/mod_index";
+import { data } from "../store/data.js";
+import { index } from "../store/mod_index.js";
 
 export async function checkIndex() {
   if (index.version === INDEX_VERSION) return;
