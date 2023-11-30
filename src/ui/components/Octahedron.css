@@ -1,20 +1,23 @@
 .octahedron {
   position: relative;
   width: 48px;
-  height: 48px;
+  height: 60px;
   left: 50%;
   margin-top: 20px;
   margin-bottom: 20px;
   transform: translate(-50%, -0%);
+  perspective: 200px;
 }
 
 .octahedron .solid {
-  position: relative;
+  position: absolute;
   width: 0;
-  height: 45px;
+  height: 0;
+  top: 24px;
   left: 50%;
   animation: octahedron-spin 80s infinite linear;
   transform-style: preserve-3d;
+  transform-origin: 0 5px;
 }
 
 .octahedron .solid .side {
@@ -35,90 +38,266 @@
   bottom: 0;
   transform: translateX(-50%);
   width: 7px;
-  height: 38px;
+  height: 100%;
   background-color: #c97500;
   filter: blur(4px);
   mix-blend-mode: hard-light;
 }
 
-.octahedron .solid .side:nth-child(1) {
+.octahedron .solid .side:nth-child(01) {
   transform: rotateY(90deg) translateZ(33.936px) rotateX(45deg);
-  border-bottom-color: rgba(136, 236, 147, 0.4);
 }
 
-.octahedron .solid .side:nth-child(2) {
+.octahedron .solid .side:nth-child(02) {
   transform: rotateY(180deg) translateZ(33.936px) rotateX(45deg);
-  border-bottom-color: rgba(146, 171, 160, 0.4);
 }
 
-.octahedron .solid .side:nth-child(3) {
+.octahedron .solid .side:nth-child(03) {
   transform: rotateY(270deg) translateZ(33.936px) rotateX(45deg);
-  border-bottom-color: rgba(161, 211, 234, 0.4);
 }
 
-.octahedron .solid .side:nth-child(4) {
+.octahedron .solid .side:nth-child(04) {
   transform: rotateY(360deg) translateZ(33.936px) rotateX(45deg);
-  border-bottom-color: rgba(101, 232, 179, 0.4);
 }
 
-.octahedron .solid .side:nth-child(5) {
+.octahedron .solid .side:nth-child(05) {
   transform: rotateY(450deg) translateZ(33.936px) rotateX(135deg);
-  border-bottom-color: rgba(160, 202, 137, 0.4);
 }
 
-.octahedron .solid .side:nth-child(6) {
+.octahedron .solid .side:nth-child(06) {
   transform: rotateY(540deg) translateZ(33.936px) rotateX(135deg);
-  border-bottom-color: rgba(100, 199, 109, 0.4);
 }
 
-.octahedron .solid .side:nth-child(7) {
+.octahedron .solid .side:nth-child(07) {
   transform: rotateY(630deg) translateZ(33.936px) rotateX(135deg);
-  border-bottom-color: rgba(75, 225, 116, 0.4);
 }
 
-.octahedron .solid .side:nth-child(8) {
+.octahedron .solid .side:nth-child(08) {
   transform: rotateY(720deg) translateZ(33.936px) rotateX(135deg);
-  border-bottom-color: rgba(218, 201, 128, 0.4);
 }
 
-.octahedron .solid .side:nth-child(9) {
+.octahedron .solid .side:nth-child(09) {
   transform: rotateY(45deg) translateZ(24px) translateX(-24px) rotateZ(90deg);
-  border-bottom-color: rgba(218, 201, 128, 0.4);
 }
 
 .octahedron .solid .side:nth-child(10) {
   transform: rotateY(135deg) translateZ(24px) translateX(-24px) rotateZ(90deg);
-  border-bottom-color: rgba(218, 201, 128, 0.4);
 }
 
 .octahedron .solid .side:nth-child(11) {
   transform: rotateY(225deg) translateZ(24px) translateX(-24px) rotateZ(90deg);
-  border-bottom-color: rgba(218, 201, 128, 0.4);
 }
 
 .octahedron .solid .side:nth-child(12) {
   transform: rotateY(315deg) translateZ(24px) translateX(-24px) rotateZ(90deg);
-  border-bottom-color: rgba(218, 201, 128, 0.4);
+}
+
+.octahedron .solid2 {
+  position: absolute;
+  width: 0;
+  height: 0;
+  top: 45px;
+  left: 50%;
+  animation: octahedron-spin 80s infinite linear reverse;
+  transform-style: preserve-3d;
+  transform-origin: 0 -15px;
+}
+
+.octahedron .solid2 .side {
+  position: absolute;
+  left: 0;
+  bottom: 50%;
+  width: 2px;
+  height: 30px;
+  background-color: #ffdeb0;
+  filter: blur(0.5px);
+  /* transform-origin: 50% 55px; */
+  /*     animation: octahedron-explode 20s infinite linear; */;
+}
+
+.octahedron .solid2 .side::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 7px;
+  height: 100%;
+  background-color: #c97500;
+  filter: blur(4px);
+  mix-blend-mode: hard-light;
+}
+
+.octahedron .solid2 .side:nth-child(01) {
+  transform: rotateY(90deg) translate3D(30px, 15px, 30px) rotateY(45deg) translate(-50%, -50%);
+}
+
+.octahedron .solid2 .side:nth-child(02) {
+  transform: rotateY(180deg) translate3D(30px, 15px, 30px) rotateY(45deg) translate(-50%, -50%);
+}
+
+.octahedron .solid2 .side:nth-child(03) {
+  transform: rotateY(270deg) translate3D(30px, 15px, 30px) rotateY(45deg) translate(-50%, -50%);
+}
+
+.octahedron .solid2 .side:nth-child(04) {
+  transform: rotateY(360deg) translate3D(30px, 15px, 30px) rotateY(45deg) translate(-50%, -50%);
+}
+
+.octahedron .solid2 .side:nth-child(05) {
+  transform: rotateY(90deg) translate3D(30px, 30px, 15px) rotateX(90deg) rotateY(-45deg) translate(-50%, -50%);
+}
+
+.octahedron .solid2 .side:nth-child(06) {
+  transform: rotateY(180deg) translate3D(30px, 30px, 15px) rotateX(90deg) rotateY(-45deg) translate(-50%, -50%);
+}
+
+.octahedron .solid2 .side:nth-child(07) {
+  transform: rotateY(270deg) translate3D(30px, 30px, 15px) rotateX(90deg) rotateY(-45deg) translate(-50%, -50%);
+}
+
+.octahedron .solid2 .side:nth-child(08) {
+  transform: rotateY(360deg) translate3D(30px, 30px, 15px) rotateX(90deg) rotateY(-45deg) translate(-50%, -50%);
+}
+
+.octahedron .solid2 .side:nth-child(09) {
+  transform: rotateY(90deg) translate3D(30px, -30px, 15px) rotateX(90deg) rotateY(45deg) translate(-50%, -50%);
+}
+
+.octahedron .solid2 .side:nth-child(10) {
+  transform: rotateY(180deg) translate3D(30px, -30px, 15px) rotateX(90deg) rotateY(45deg) translate(-50%, -50%);
+}
+
+.octahedron .solid2 .side:nth-child(11) {
+  transform: rotateY(270deg) translate3D(30px, -30px, 15px) rotateX(90deg) rotateY(45deg) translate(-50%, -50%);
+}
+
+.octahedron .solid2 .side:nth-child(12) {
+  transform: rotateY(360deg) translate3D(30px, -30px, 15px) rotateX(90deg) rotateY(45deg) translate(-50%, -50%);
+}
+
+.octahedron .solid3 {
+  position: absolute;
+  width: 0;
+  height: 0;
+  top: 45px;
+  left: 50%;
+  animation: octahedron3-spin 80s infinite linear reverse;
+  transform-style: preserve-3d;
+  transform-origin: 0 -15px;
+}
+
+.octahedron .solid3 .side {
+  position: absolute;
+  left: 0;
+  bottom: 50%;
+  width: 2px;
+  height: 30px;
+  background-color: #ffdeb0;
+  filter: blur(0.5px);
+}
+
+.octahedron .solid3 .side::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 7px;
+  height: 100%;
+  background-color: #c97500;
+  filter: blur(4px);
+  mix-blend-mode: hard-light;
+}
+
+.octahedron .solid3 .side:nth-child(01) {
+  transform: rotateX(90deg) translate3D(70px, 15px, 10px) rotateZ(90deg) rotateY(45deg) translate(-50%, -50%);
+}
+
+.octahedron .solid3 .side:nth-child(02) {
+  transform: rotateX(180deg) translate3D(70px, 15px, 10px) rotateZ(90deg) rotateY(45deg) translate(-50%, -50%);
+}
+
+.octahedron .solid3 .side:nth-child(03) {
+  transform: rotateX(270deg) translate3D(70px, 15px, 10px) rotateZ(90deg) rotateY(45deg) translate(-50%, -50%);
+}
+
+.octahedron .solid3 .side:nth-child(04) {
+  transform: rotateX(360deg) translate3D(70px, 15px, 10px) rotateZ(90deg) rotateY(45deg) translate(-50%, -50%);
+}
+
+.octahedron .solid3 .side:nth-child(05) {
+  transform: rotateX(90deg) translate3D(-100px, 15px, 10px) rotateZ(90deg) rotateY(45deg) translate(-50%, -50%);
+}
+
+.octahedron .solid3 .side:nth-child(06) {
+  transform: rotateX(180deg) translate3D(-100px, 15px, 10px) rotateZ(90deg) rotateY(45deg) translate(-50%, -50%);
+}
+
+.octahedron .solid3 .side:nth-child(07) {
+  transform: rotateX(270deg) translate3D(-100px, 15px, 10px) rotateZ(90deg) rotateY(45deg) translate(-50%, -50%);
+}
+
+.octahedron .solid3 .side:nth-child(08) {
+  transform: rotateX(360deg) translate3D(-100px, 15px, 10px) rotateZ(90deg) rotateY(45deg) translate(-50%, -50%);
+}
+
+.octahedron .solid3 .side:nth-child(09) {
+  transform: rotateX(90deg) translate3D(106px, 10px, 9.8px) rotateX(45deg) translate(-50%, -50%);
+}
+
+.octahedron .solid3 .side:nth-child(10) {
+  transform: rotateX(180deg) translate3D(106px, 10px, 9.8px) rotateX(45deg) translate(-50%, -50%);
+}
+
+.octahedron .solid3 .side:nth-child(11) {
+  transform: rotateX(90deg) translate3D(-106px, 10px, 9.8px) rotateX(45deg) translate(-50%, -50%);
+}
+
+.octahedron .solid3 .side:nth-child(12) {
+  transform: rotateX(180deg) translate3D(-106px, 10px, 9.8px) rotateX(45deg) translate(-50%, -50%);
+}
+
+.octahedron .solid3 .side:nth-child(13) {
+  transform: rotateX(90deg) translate3D(-140px, 1px, 0px) rotateZ(90deg) rotateY(45deg) translate(-50%, -50%);
+}
+
+.octahedron .solid3 .side:nth-child(14) {
+  transform: rotateX(180deg) translate3D(-140px, 1px, 0px) rotateZ(90deg) rotateY(45deg) translate(-50%, -50%);
+}
+
+.octahedron .solid3 .side:nth-child(15) {
+  transform: rotateX(270deg) translate3D(110px, 1px, 0px) rotateZ(90deg) rotateY(45deg) translate(-50%, -50%);
+}
+
+.octahedron .solid3 .side:nth-child(16) {
+  transform: rotateX(360deg) translate3D(110px, 1px, 0px) rotateZ(90deg) rotateY(45deg) translate(-50%, -50%);
 }
 
 @keyframes octahedron-spin {
   0% {
     transform: rotateX(0deg) rotateY(0deg) rotateZ(10deg);
-    --rot-am: rotateY(0deg);
   }
 
   30% {
     transform: rotateX(0deg) rotateY(1080deg) rotateZ(15deg);
-    --rot-am: rotateY(0deg);
   }
 
   70% {
     transform: rotateX(0deg) rotateY(2520deg) rotateZ(365deg);
-    --rot-am: rotateY(0deg);
   }
 
   100% {
     transform: rotateX(0deg) rotateY(3600deg) rotateZ(370deg);
-    --rot-am: rotateY(720deg);
+  }
+}
+
+@keyframes octahedron3-spin {
+  0% {
+    transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+  }
+
+  100% {
+    transform: rotateX(3600deg) rotateY(0deg) rotateZ(0deg);
   }
 }
