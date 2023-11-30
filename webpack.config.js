@@ -60,6 +60,7 @@ export default {
       INDEX_URL: JSON.stringify("https://cml.snowy.cafe/index.json"),
     }),
   ],
+  devtool: "source-map",
   output: {
     filename: "cModLoader.js",
     path: path.resolve(__dirname, "dist"),
