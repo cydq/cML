@@ -1,4 +1,4 @@
-import { checkIndex } from "../util/mod_index";
+import { checkIndex } from "../util/mod_index.js";
 
 export async function initModIndex() {
   console.log("[cML] Initializing mod index...");

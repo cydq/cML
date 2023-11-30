@@ -18,7 +18,7 @@ export function IndexBlock() {
   return (
     <Sysblock title="Available Mods">
       {Object.entries(idx.mods).map(([name, mod]) => {
-        if (!mod || dat.enabled.includes(name)) return null;
+        if (!mod || (dat.enabled && dat.enabled.includes(name))) return null;
 
         return (
           <Sysbox title={name}>

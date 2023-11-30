@@ -18,7 +18,10 @@ export function Menu() {
 function ModsContainer() {
   const dat = useSnapshot(data());
 
-  return dat.enabled
-    .map(registry.getMod)
-    .map((mod) => (mod ? <ModBlock mod={mod} /> : null));
+  return (
+    dat.enabled &&
+    dat.enabled
+      .map(registry.getMod)
+      .map((mod) => (mod ? <ModBlock mod={mod} /> : null))
+  );
 }
