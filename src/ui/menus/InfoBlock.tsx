@@ -41,7 +41,7 @@ export function InfoBlock() {
 
   return (
     <Sysblock title="cModLoader">
-      <Octahedron onClick={() => setClicks(clicks + 1)} />
+      <Octahedron clicks={clicks} onClick={() => setClicks(clicks + 1)} />
 
       <Sysbox title="Info">
         <Syscription>

@@ -1,8 +1,8 @@
 import "./Octahedron.css";
 
-export function Octahedron(props: { onClick?: () => void }) {
+export function Octahedron(props: { clicks: number; onClick?: () => void }) {
   return (
-    <div className="octahedron" style={{}} onClick={props.onClick}>
+    <div className="octahedron" onClick={props.onClick}>
       <div className="solid3">
         <div className="side" />
         <div className="side" />
@@ -37,7 +37,7 @@ export function Octahedron(props: { onClick?: () => void }) {
         <div className="side" />
       </div>
 
-      <div className="solid">
+      <div className={"solid" + (props.clicks >= 10 ? " devmode" : "")}>
         <div className="side" />
         <div className="side" />
         <div className="side" />
