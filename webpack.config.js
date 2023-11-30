@@ -4,6 +4,7 @@ const TerserPlugin = require("terser-webpack-plugin");
 const pkg = require("./package.json");
 
 module.exports = {
+  mode: "production",
   target: "web",
   entry: {
     cModLoader: "./src/main.ts",
@@ -14,6 +15,13 @@ module.exports = {
         test: /\.ts?x?$/,
         use: "babel-loader",
         exclude: /node_modules/,
+      },
+      {
+        test: /\.css$/i,
+        use: [
+          { loader: "style-loader", options: { injectType: "styleTag" } },
+          "css-loader",
+        ],
       },
     ],
   },
@@ -31,7 +39,7 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: [".tsx", ".ts", ".js"],
+    extensions: [".tsx", ".ts", ".js", ".css"],
     alias: {
       react: "preact/compat",
       "react-dom/test-utils": "preact/test-utils",
