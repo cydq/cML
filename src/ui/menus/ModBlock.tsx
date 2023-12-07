@@ -67,8 +67,8 @@ export function ModBlock(props: { mod: Mod }) {
         </ButtonRow>
       </Sysbox>
 
-      {Object.keys(props.mod.optionDefintions).map((key) => {
-        const option = props.mod.optionDefintions[key];
+      {Object.keys(props.mod.optionDefinitions).map((key) => {
+        const option = props.mod.optionDefinitions[key];
 
         if (option.type === "check") {
           const selectedStyle = {

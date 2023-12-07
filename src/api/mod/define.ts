@@ -45,7 +45,7 @@ export function define<TOpt extends {} = any, TData extends {} = any>(
       return createSaveStore<TData>(`mods.${name}.data`);
     },
 
-    get optionDefintions() {
+    get optionDefinitions() {
       return ctx.options;
     },
 

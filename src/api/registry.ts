@@ -47,7 +47,7 @@ function createRegistry(): Registry {
           await mod.emit(event);
           loaded++;
         } catch (e: unknown) {
-          console.error(`[cML] Failed to load ${mod.name}:`, e);
+          cML.error(`Failed to load ${mod.name}:`, e);
         }
       }
 

@@ -7,7 +7,7 @@ export interface Mod<TOpt extends {} = any, TData extends {} = any> {
   readonly options: TOpt;
   readonly data: TData;
 
-  readonly optionDefintions: Record<string, OptionDefinition>;
+  readonly optionDefinitions: Record<string, OptionDefinition>;
 
   resetOptions(): void;
   resetData(): void;
