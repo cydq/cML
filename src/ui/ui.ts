@@ -6,7 +6,7 @@ export function injectMenu() {
   root.id = "cml-sysmenu-root";
 
   const container = document.querySelector("#system-menu");
-  if (!container) throw new Error("[cML] Failed to find system menu container");
+  if (!container) throw new Error("Failed to find system menu container!");
 
   container.insertBefore(
     root,

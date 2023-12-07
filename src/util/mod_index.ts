@@ -4,14 +4,14 @@ import { index } from "../store/mod_index.js";
 export async function checkIndex() {
   if (index.version === INDEX_VERSION) return;
 
-  console.log("[cML] Index is outdated!");
+  cML.log("Index is outdated!");
 
   await fetchIndex();
 
   const newVersion = index.version;
   if (newVersion === INDEX_VERSION) return;
 
-  throw new Error(
+  cML.error(
     `Updated index is still outdated! Expected ${INDEX_VERSION}, got ${newVersion}... Is cML outdated?`,
   );
 }
@@ -20,7 +20,7 @@ export async function fetchIndex() {
   const indexLocation = data().indexUrl ?? INDEX_URL;
 
   const res = await fetch(indexLocation);
-  if (!res.ok) throw new Error("[cML] Failed to fetch index");
+  if (!res.ok) return cML.error("Failed to fetch index");
 
   writeIndex(await res.json());
 }

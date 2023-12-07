@@ -14,6 +14,9 @@ export async function installMod(name: string) {
   mod.emit("install");
 
   data().enabled = [...(data().enabled || []), name];
+
+  mod.emit("enable");
+  mod.emit("load");
 }
 
 export function uninstallMod(mod: Mod) {

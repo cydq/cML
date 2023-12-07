@@ -8,9 +8,8 @@ import { injectMenu } from "./ui/ui.js";
 import { initStore } from "./init/stores.js";
 
 (async function init() {
-  if (cML.__meta__.loaded) {
-    return console.log("[cML] Already loaded.. Skipping initialization");
-  }
+  if (cML.__meta__.loaded)
+    return cML.log("Already loaded.. Skipping initialization");
 
   // Initialize storage
   initStore();
